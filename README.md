@@ -1,7 +1,4 @@
 # Vue_Typescript
-vue and typescript
-=======
-# demo
 
 ## Project setup
 ```
@@ -27,4 +24,3 @@ yarn run test
 ```
 yarn run lint
 ```
->>>>>>> init
