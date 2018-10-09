@@ -8,9 +8,26 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+interface Person {
+    name: string,
+    age: number
+}
 
-@Component({})
+@Component({
+
+})
 export default class HelloWorld extends Vue {
+  mounted(){
+      // let user = {
+      //     name: "mannix_lei",
+      //     age: 23
+      // }
+      // this.foo(user)
+  }
+
+  foo(user:Person){
+      console.info(`my name is ${user.name}, I'm ${user.age} years old`)
+  }
 
 }
 </script>
