@@ -1,13 +1,29 @@
 <template>
   <div class="hello">
     <div style="font-size: 24px">
-      Hello World
+      <v-data-table
+              :loading="loadingData"
+              :headers="headers"
+              :items="desserts"
+              hide-actions
+              class="elevation-1"
+              rows-per-page-items=[5,10]
+              rows-per-page-text="20"
+      >
+        <template slot="items" slot-scope="props">
+          <div style="width: 80%"><img width="20%" :src="props.item.logo_url"/></div>
+          <td class="text-xs-right">{{ props.item.code }}</td>
+          <td class="text-xs-right">{{ props.item.name_en }}</td>
+          <td class="text-xs-right">{{ props.item.name_cn }}</td>
+        </template>
+      </v-data-table>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import axios from 'axios'
 interface Person {
     name: string,
     age: number
@@ -18,15 +34,32 @@ interface Person {
 })
 export default class HelloWorld extends Vue {
   mounted(){
-      // let user = {
-      //     name: "mannix_lei",
-      //     age: 23
-      // }
-      // this.foo(user)
-  }
+      this._initCoinInfo()
+  };
 
-  foo(user:Person){
-      console.info(`my name is ${user.name}, I'm ${user.age} years old`)
+  loadingData:boolean = false;
+
+  headers:Array = [
+      {
+          text: 'logo_url',
+          align: 'center',
+          sortable: false,
+      },
+      { text: 'code', align: 'center'},
+      { text: 'name_en', align: 'center'},
+      { text: 'name_cn',align: 'center'}
+  ];
+  desserts:Array = [];
+
+  _initCoinInfo():void {
+      this.loadingData = true
+      axios.get("http://www.mybesttoken.com/api/v3/token/all").then((res)=>{
+          console.info(res.data)
+          this.desserts = res.data
+          this.loadingData = false
+      }).catch((error)=>{
+          console.info(error)
+      })
   }
 
 }
@@ -34,15 +67,4 @@ export default class HelloWorld extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .button{
-    width: 5%;
-    cursor: pointer;
-    border: 1px solid gray;
-    border-radius: 5px;
-  }
-  .button:hover{
-    background-color: black;
-    color: white;
-  }
-
 </style>

@@ -8,7 +8,7 @@
             app
     >
       <v-list dense>
-        <v-list-tile @click="toUserInfo">
+        <v-list-tile @click="goPage('userInfo')">
           <v-list-tile-action>
             <v-icon>person</v-icon>
           </v-list-tile-action>
@@ -17,7 +17,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile @click="toSetting">
+        <v-list-tile @click="goPage('main')">
           <v-list-tile-action>
             <v-icon>settings</v-icon>
           </v-list-tile-action>
@@ -25,6 +25,15 @@
             <v-list-tile-title>Settings</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+      <v-list-tile @click="goPage('test')">
+        <v-list-tile-action>
+          <v-icon>settings</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Test</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
@@ -51,7 +60,9 @@
       <v-container fluid>
         <v-layout justify-center align-center>
           <v-flex>
-            <router-view/>
+            <keep-alive>
+              <router-view v-if="$route.meta.keepAlive"/>
+            </keep-alive>
           </v-flex>
         </v-layout>
       </v-container>
@@ -158,12 +169,22 @@
             }, 500)
         }
 
-        toUserInfo():void{
-            this.$router.push('/userInfo')
-        }
+        goPage(param:string){
+            switch (param) {
+                case 'userInfo':
+                    this.$router.push('/userInfo');
+                    break;
+                case 'main':
+                    this.$router.push('/')
+                    break
+                case 'test':
+                    this.$router.push('/test')
+                    break
+                default:
+                    this.$router.push('/')
+                    break
 
-        toSetting():void{
-            this.$router.push('/')
+            }
         }
 
     }

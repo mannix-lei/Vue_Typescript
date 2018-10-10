@@ -2,6 +2,7 @@
     <div id="userInfo">
         <div>
             <v-data-table
+                    :loading="loadingData"
                     :headers="headers"
                     :items="desserts"
                     class="elevation-1"
@@ -34,22 +35,28 @@
 
     @Component
     export default class UserInfo extends Vue {
+        loadingData:boolean = false
         desserts:Array = []
         mounted(){
+            this.initNews()
+        }
+        headers:Array= [
+            { text: 'news_id', align: 'center', value: 'name'},
+            { text: 'content', align: 'center', value: 'fat'},
+            { text: 'create_time', align: 'right', value: 'carbs'}]
+
+        initNews():void{
+            this.loadingData = true
             axios.get('http://www.mybesttoken.com/api/v1/message/news/Bitcoin?lang=&time=&limit=5').then((res) =>{
                 this.desserts = res.data;
                 for(var i = 0;i<res.data.length;i++){
                     this.desserts[i].create_time = formatTime(res.data[i].create_time)
                 }
+                this.loadingData = false
             }).catch((error)=>{
                 console.info(error)
             })
         }
-        headers:Array= [
-            { text: 'news_id', align: 'center', value: 'name'
-            },
-            { text: 'content', align: 'center', value: 'fat' },
-            { text: 'create_time', align: 'right', value: 'carbs' }]
     }
 </script>
 
